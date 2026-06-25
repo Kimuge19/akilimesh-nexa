@@ -9,6 +9,13 @@ export default function PeerLearning() {
   const [view, setView] = useState<"local" | "global">("local")
   const [requests, setRequests] = useState<any[]>([])
   const [connected, setConnected] = useState<any[]>([])
+  interface Peer {
+  name: string
+  course: string
+  focus: string
+  country?: string
+  university?: string
+}
 
   useEffect(() => {
     const user = localStorage.getItem("akilimesh_user")
@@ -17,7 +24,7 @@ export default function PeerLearning() {
 
   /* ================= DATA ================= */
 
-  const localPeers = [
+  const localPeers: Peer[] = [
     { name: "Beatrice Wanjiru", course: "CSF 805", focus: "Distributed Ledger Security" },
     { name: "Isaac Mugambi", course: "CSF 805", focus: "Blockchain Architecture" },
     { name: "Kiptoo Kirwa", course: "CSC 823", focus: "IoT Security Systems" },
@@ -26,29 +33,31 @@ export default function PeerLearning() {
     { name: "Kandie Kimuge", course: "CSF 801", focus: "Web Security Protocols" },
   ]
 
-  const globalPeers = [
+  const globalPeers: Peer[] = [
     { name: "Alex Johnson", country: "USA", university: "MIT", course: "CSF 805", focus: "Blockchain Research" },
     { name: "Emily Carter", country: "UK", university: "University of London", course: "CSC 823", focus: "Cyber Defense Models" },
     { name: "Raj Patel", country: "India", university: "IIT Delhi", course: "CSC 823", focus: "IoT Engineering" },
     { name: "Amina Yusuf", country: "Nigeria", university: "UNILAG", course: "CSF 801", focus: "Web Security" },
   ]
 
-  const data = view === "local" ? localPeers : globalPeers
+  const data: Peer[] = view === "local"
+  ? localPeers
+  : globalPeers
 
   /* ================= ACTIONS ================= */
 
-  const sendRequest = (peer: any) => {
+  const sendRequest = (peer: Peer) => {
     if (!requests.find(r => r.name === peer.name)) {
       setRequests([...requests, peer])
     }
   }
 
-  const acceptRequest = (peer: any) => {
+  const acceptRequest = (peer: Peer) => {
     setConnected([...connected, peer])
     setRequests(requests.filter(r => r.name !== peer.name))
   }
 
-  const rejectRequest = (peer: any) => {
+  const rejectRequest = (peer: Peer) => {
     setRequests(requests.filter(r => r.name !== peer.name))
   }
 
@@ -160,7 +169,7 @@ export default function PeerLearning() {
         <div style={styles.section}>
           <h3>{view === "local" ? "🇰🇪 Local Peers" : "🌍 Global Peers"}</h3>
 
-          {data.map((p, i) => (
+       {data.map((p: Peer, i) => (
             <div key={i} style={styles.card}>
               <div>
                 👤 {p.name}
